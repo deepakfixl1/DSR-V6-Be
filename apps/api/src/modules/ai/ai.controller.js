@@ -138,6 +138,7 @@ export async function assistantQueryController(req, res, next) {
     userId = req.user?.id;
     query = parsed.query.trim();
     conversationHistory = parsed.conversationHistory ?? [];
+    req._frontendContext = parsed.context ?? {};
 
     if (!tenantId) throw ApiError.badRequest("tenantId is required");
     if (!userId)   throw ApiError.unauthorized("Authentication required");
@@ -165,7 +166,7 @@ export async function assistantQueryController(req, res, next) {
   // 2. Build the AI prompt — catches formatting failures
   let prompt;
   try {
-    prompt = buildAssistantPrompt({ context, userQuery: query, conversationHistory });
+    prompt = buildAssistantPrompt({ context, userQuery: query, conversationHistory, frontendContext: req._frontendContext ?? {} });
   } catch (err) {
     logger.error({ err }, "buildAssistantPrompt failed");
     prompt = `You are an AI assistant. Answer this question: ${query}\nReturn JSON: { "message": "..." }`;

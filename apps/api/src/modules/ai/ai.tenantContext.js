@@ -131,7 +131,19 @@ export async function loadTenantContext({ tenantId, userId }) {
       .lean(),
   ]);
 
-  const goals = safe(goalsResult) ?? [];
+  // Extract membership early so we can filter goals to the requesting user only
+  const membership = safe(membershipResult);
+  const membershipId = membership?._id;
+
+  const allGoals = safe(goalsResult) ?? [];
+  // Always scope to the requesting user's own goals — employees must never see other people's goals
+  const goals = membershipId
+    ? allGoals.filter((g) => {
+        const assignedId = g.assignedToMemberId?._id ?? g.assignedToMemberId;
+        return String(assignedId) === String(membershipId);
+      })
+    : allGoals;
+
   const goalStats = {
     total: goals.length,
     completed: goals.filter((g) => g.status === "COMPLETED").length,
@@ -168,7 +180,6 @@ export async function loadTenantContext({ tenantId, userId }) {
   };
 
   const members = safe(membersResult) ?? [];
-  const membership = safe(membershipResult);
 
   return {
     tenant: safe(tenantResult),
@@ -259,7 +270,7 @@ export async function loadTenantContext({ tenantId, userId }) {
  * Build the full system prompt for the AI assistant.
  * Role-aware: owners/admins see everything, others see their scope.
  */
-export function buildAssistantPrompt({ context, userQuery, conversationHistory = [] }) {
+export function buildAssistantPrompt({ context, userQuery, conversationHistory = [], frontendContext = {} }) {
   const { tenant, currentUser, organization, weekCycles, goals, blockers, reports, plan, pendingApprovals, notifications } = context;
 
   const isAdminLevel =
@@ -327,6 +338,24 @@ DEPARTMENTS: ${organization.departments.map((d) => `${d.name}${d.manager ? ` (mg
           .join("\n")}`
       : "";
 
+  // ── DSR / report-generation specific context injected from the frontend ──────
+  const isDSRMode = frontendContext.reportType === "DSR";
+  const dsrBlock = isDSRMode
+    ? `
+REPORT BEING GENERATED: Daily Status Report (DSR) for ${frontendContext.date ?? "today"}
+YOUR GOALS FOR TODAY (${frontendContext.goalsCount ?? 0} goals):
+${
+  Array.isArray(frontendContext.goals) && frontendContext.goals.length > 0
+    ? frontendContext.goals.map((g) => `  • ${g}`).join("\n")
+    : "  (no goals found for today)"
+}
+TEMPLATE: ${frontendContext.templateName ?? "Standard DSR"}
+TASK FIELDS: ${Array.isArray(frontendContext.fields) ? frontendContext.fields.join(", ") : "none"}
+
+IMPORTANT: You are helping THIS USER fill in THEIR OWN DSR for TODAY ONLY.
+Analyse only the goals listed above. Do not reference other employees' goals or goals from other days.`
+    : "";
+
   return `You are the AI assistant for ${tenant?.name ?? "this organization"}'s internal platform.
 You have FULL access to real-time data for this tenant. Today is ${today}.
 
@@ -334,7 +363,7 @@ YOUR USER:
 - Role: ${currentUser.role}${currentUser.isOwner ? " (Owner)" : ""}
 - Department: ${currentUser.department ?? "All departments"}
 - Access level: ${isAdminLevel ? "Full organization access" : "Department-scoped access"}
-
+${dsrBlock}
 TENANT: ${tenant?.name ?? "Unknown"} | Plan: ${plan.name} | Subscription: ${plan.status ?? "active"}
 PENDING APPROVALS: ${pendingApprovals}
 ${orgSummary}

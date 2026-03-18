@@ -373,6 +373,13 @@ async function seedUsers() {
       isPlatformAdmin: true,
       password: "Admin@123",
     },
+    {
+      label: "Platform Owner",
+      email: "owner@demo.com",
+      name: "Platform Owner",
+      isPlatformAdmin: false,
+      password: "Admin@123",
+    },
     // Tenant-level accounts
     {
       label: "Tenant Admin",
@@ -473,9 +480,11 @@ async function seedMemberships(tenant, users, roles) {
   // Every user gets a tenant membership and tenantId association
   const memberships = [
     // Platform Admin is also a member so they have a tenantId context
-    { userLabel: "Platform Admin", roleKey: "platform_admin", isOwner: false },
+    { userLabel: "Platform Admin",  roleKey: "platform_admin", isOwner: false },
+    // Platform Owner — tenant owner account
+    { userLabel: "Platform Owner",  roleKey: "tenant_admin",   isOwner: true  },
     // Tenant owner
-    { userLabel: "Tenant Admin",   roleKey: "tenant_admin",   isOwner: true  },
+    { userLabel: "Tenant Admin",    roleKey: "tenant_admin",   isOwner: false },
     { userLabel: "Manager",        roleKey: "manager",        isOwner: false },
     { userLabel: "Team Lead",      roleKey: "team_lead",      isOwner: false },
     { userLabel: "Employee 1",     roleKey: "employee",       isOwner: false },
