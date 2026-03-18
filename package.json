@@ -41,6 +41,8 @@
     "supertest": "^7.1.0"
   },
 "scripts": {
+  "start": "node apps/api/src/app/server.js",
+
   "dev": "concurrently \"npm:dev:server\" \"npm:dev:email\" \"npm:dev:report\" \"npm:dev:export\" \"npm:dev:ai\" \"npm:dev:ws\"",
 
   "dev:server": "node --watch apps/api/src/app/server.js",
