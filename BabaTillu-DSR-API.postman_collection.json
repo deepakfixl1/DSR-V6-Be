@@ -1,0 +1,5082 @@
+{
+  "info": {
+    "name": "BabaTillu DSR API",
+    "_postman_id": "babatigru-dsr-api-collection-v1",
+    "description": "Complete API collection for BabaTillu DSR platform. Covers Auth, MFA, Users, Audit, Notifications, Billing, Tenants, Membership, AI Reports, Report Templates, Schedules, and Runs.\n\n**Setup:**\n1. Set `base_url` variable to your API host (default: http://localhost:5000)\n2. Call `POST /auth/login` — the `access_token` and `tenant_id` vars will auto-populate via the test script.\n3. All authenticated requests use `Authorization: Bearer {{access_token}}`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tenant_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "template_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "schedule_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "run_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "report_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "plan_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "session_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "challenge_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "job_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "department_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "task_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "time_log_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "goal_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "blocker_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "work_goal_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "week_cycle_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "work_report_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "report_template_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "employee_member_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Liveness Probe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health/live",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health",
+                "live"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Readiness Probe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health/ready",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health",
+                "ready"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/verify-email",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "verify-email"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resend Verification OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/resend-verification",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "resend-verification"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('access_token', res.data.accessToken);",
+                  "}",
+                  "if (res && res.data && res.data.user && res.data.user._id) {",
+                  "  pm.collectionVariables.set('user_id', res.data.user._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password@123\",\n  \"deviceId\": \"device-001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('access_token', res.data.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            },
+            "description": "Uses the refreshToken cookie automatically."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout All Sessions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout-all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout-all"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<reset-token-from-email>\",\n  \"newPassword\": \"NewPassword@456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MFA",
+      "item": [
+        {
+          "name": "Get MFA Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/mfa/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "mfa",
+                "status"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Setup MFA (TOTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceName\": \"My Phone\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/mfa/setup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "mfa",
+                "setup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Verify MFA Setup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/mfa/verify-setup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "mfa",
+                "verify-setup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Verify MFA Challenge",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"challengeId\": \"{{challenge_id}}\",\n  \"code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/mfa/verify",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "mfa",
+                "verify"
+              ]
+            },
+            "description": "Used after login when MFA is required. challengeId is returned from the login response."
+          }
+        },
+        {
+          "name": "Disable MFA",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"Password@123\",\n  \"mfaCode\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/mfa/disable",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "mfa",
+                "disable"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Regenerate Backup Codes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mfaCode\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/mfa/backup-codes/regenerate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "mfa",
+                "backup-codes",
+                "regenerate"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"avatarUrl\": \"https://example.com/avatar.png\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Password@123\",\n  \"newPassword\": \"NewPassword@456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/change-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "change-password"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List My Sessions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/sessions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "sessions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Revoke Session",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/sessions/{{session_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "sessions",
+                "{{session_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Audit",
+      "description": "Requires admin role.",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/audit?page=1&limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "audit"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Audit Log by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/audit/:id?tenantId={{tenant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "audit",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<audit-log-id>"
+                }
+              ],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenant_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/unread-count?tenantId={{tenant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "unread-count"
+              ],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenant_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications?tenantId={{tenant_id}}&page=1&limit=20&unreadOnly=false",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenant_id}}"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "unreadOnly",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/:id/read?tenantId={{tenant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                ":id",
+                "read"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<notification-id>"
+                }
+              ],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenant_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Billing",
+      "item": [
+        {
+          "name": "Plans",
+          "description": "Plan management requires admin role.",
+          "item": [
+            {
+              "name": "List Plans",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/billing/plans?activeOnly=true",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "plans"
+                  ],
+                  "query": [
+                    {
+                      "key": "activeOnly",
+                      "value": "true"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Plan (Admin)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"planCode\": \"pro-monthly\",\n  \"name\": \"Pro Monthly\",\n  \"stripePriceId\": \"price_xxxxx\",\n  \"features\": {\n    \"rbac\": true,\n    \"auditLogs\": true,\n    \"apiAccess\": true,\n    \"automationWorkers\": false,\n    \"advancedSecurity\": false,\n    \"sso\": false\n  },\n  \"limits\": {\n    \"maxUsers\": 50,\n    \"maxStorageGB\": 100,\n    \"maxApiCallsPerMonth\": 10000,\n    \"auditLogRetentionDays\": 90\n  },\n  \"metadata\": {}\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/billing/plans",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "plans"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Plan (Admin)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Pro Monthly Updated\",\n  \"stripePriceId\": \"price_yyyyy\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/billing/plans/{{plan_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "plans",
+                    "{{plan_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Toggle Plan Active/Inactive (Admin)",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/billing/plans/{{plan_id}}/toggle",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "plans",
+                    "{{plan_id}}",
+                    "toggle"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Plan (Admin)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/billing/plans/{{plan_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "plans",
+                    "{{plan_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Subscriptions",
+          "item": [
+            {
+              "name": "Get Tenant Subscription",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/billing/{{tenant_id}}/subscription",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "{{tenant_id}}",
+                    "subscription"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Subscribe to Plan",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"planId\": \"{{plan_id}}\",\n  \"paymentMethodId\": \"pm_xxxxx\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/billing/{{tenant_id}}/subscribe",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "{{tenant_id}}",
+                    "subscribe"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Upgrade Subscription",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"planId\": \"{{plan_id}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/billing/{{tenant_id}}/upgrade",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "{{tenant_id}}",
+                    "upgrade"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cancel Subscription",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/billing/{{tenant_id}}/cancel",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "{{tenant_id}}",
+                    "cancel"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Resume Subscription",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/billing/{{tenant_id}}/resume",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "{{tenant_id}}",
+                    "resume"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stripe Webhook",
+          "item": [
+            {
+              "name": "Stripe Webhook Handler",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "stripe-signature",
+                    "value": "<stripe-signature-header>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"evt_xxxxx\",\n  \"object\": \"event\",\n  \"type\": \"invoice.payment_succeeded\",\n  \"data\": {}\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/billing/webhook",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "billing",
+                    "webhook"
+                  ]
+                },
+                "description": "Must send raw JSON body. The stripe-signature header is required for HMAC verification."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tenants",
+      "item": [
+        {
+          "name": "Create Tenant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('tenant_id', res.data._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Corp\",\n  \"slug\": \"acme-corp\",\n  \"metadata\": {\n    \"industry\": \"technology\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tenants",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Tenant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Tenant",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Corp Updated\",\n  \"metadata\": {\n    \"industry\": \"saas\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Tenant",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Tenant Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Tenant Settings",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branding\": {\n    \"logoUrl\": \"https://example.com/logo.png\",\n    \"primaryColor\": \"#4A90E2\"\n  },\n  \"security\": {\n    \"mfaRequired\": false,\n    \"sessionTimeoutMinutes\": 60\n  },\n  \"notifications\": {\n    \"emailEnabled\": true,\n    \"slackEnabled\": false\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Departments",
+          "item": [
+            {
+              "name": "Create Department",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Engineering\",\n  \"slug\": \"engineering\",\n  \"description\": \"Core product team\",\n  \"managerId\": \"{{user_id}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/departments",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "departments"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Departments",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/departments?page=1&limit=20&search=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "departments"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "search",
+                      "value": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Department by ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/departments/{{department_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "departments",
+                    "{{department_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Department",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Engineering Updated\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/departments/{{department_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "departments",
+                    "{{department_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Department",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/departments/{{department_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "departments",
+                    "{{department_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tasks",
+          "item": [
+            {
+              "name": "Create Task",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Implement OAuth flow\",\n  \"description\": \"Add OAuth login support\",\n  \"status\": \"open\",\n  \"priority\": \"high\",\n  \"assigneeId\": \"{{user_id}}\",\n  \"departmentId\": \"{{department_id}}\",\n  \"projectId\": null,\n  \"dueAt\": \"2026-03-10T00:00:00.000Z\",\n  \"metadata\": {\"vip\": true}\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Tasks",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks?page=1&limit=20&status=&priority=&assigneeId=&departmentId=&projectId=&search=",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "status",
+                      "value": ""
+                    },
+                    {
+                      "key": "priority",
+                      "value": ""
+                    },
+                    {
+                      "key": "assigneeId",
+                      "value": ""
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": ""
+                    },
+                    {
+                      "key": "projectId",
+                      "value": ""
+                    },
+                    {
+                      "key": "search",
+                      "value": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Task by ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Task",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"in_progress\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Task",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Task Time Log",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"startedAt\": \"2026-02-24T09:00:00.000Z\",\n  \"endedAt\": \"2026-02-24T11:00:00.000Z\",\n  \"billable\": true,\n  \"note\": \"Initial implementation\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks/{{task_id}}/time-logs",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks",
+                    "{{task_id}}",
+                    "time-logs"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Task Time Logs",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/tasks/{{task_id}}/time-logs?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "tasks",
+                    "{{task_id}}",
+                    "time-logs"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Time Log by ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/time-logs/{{time_log_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "time-logs",
+                    "{{time_log_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Time Log",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"Adjusted time log\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/time-logs/{{time_log_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "time-logs",
+                    "{{time_log_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Time Log",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tenants/{{tenant_id}}/time-logs/{{time_log_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tenants",
+                    "{{tenant_id}}",
+                    "time-logs",
+                    "{{time_log_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Membership",
+      "item": [
+        {
+          "name": "List Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/members?page=1&limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Invite Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newmember@example.com\",\n  \"roleId\": \"<role-id>\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/members/invite",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "members",
+                "invite"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Accept Invite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<invite-token-from-email>\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/members/accept",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "members",
+                "accept"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Member",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"<new-role-id>\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/members/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "members",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remove Member",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/members/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "members",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Transfer Ownership",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tenants/{{tenant_id}}/members/{{user_id}}/transfer-ownership",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tenants",
+                "{{tenant_id}}",
+                "members",
+                "{{user_id}}",
+                "transfer-ownership"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Reports (Deprecated)",
+      "description": "AI-powered report generation. All endpoints require authentication.",
+      "item": [
+        {
+          "name": "Generate Daily Summary Report (DSR)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.data && res.data.jobId) {",
+                  "  pm.collectionVariables.set('job_id', res.data.jobId);",
+                  "}",
+                  "if (res && res.data && res.data.reportId) {",
+                  "  pm.collectionVariables.set('report_id', res.data.reportId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-02-24\",\n  \"tenantId\": \"{{tenant_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/report/dsr",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "dsr"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Latest DSR",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ai/report/dsr/latest",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "dsr",
+                "latest"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Weekly Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weekStart\": \"2026-02-17\",\n  \"tenantId\": \"{{tenant_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/report/weekly",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "weekly"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Monthly Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"monthStart\": \"2026-02-01\",\n  \"tenantId\": \"{{tenant_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/report/monthly",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "monthly"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Quarterly Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quarterStart\": \"2026-01-01\",\n  \"tenantId\": \"{{tenant_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/report/quarterly",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "quarterly"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Yearly Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year\": 2026,\n  \"tenantId\": \"{{tenant_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/report/yearly",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "yearly"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Report Generation Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ai/report/status/{{job_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "status",
+                "{{job_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Report History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ai/report/history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "history"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Specific Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ai/report/{{report_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "{{report_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"format\": \"PDF\",\n  \"tenantId\": \"{{tenant_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/report/export/{{report_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "report",
+                "export",
+                "{{report_id}}"
+              ]
+            },
+            "description": "format: PDF | CSV | JSON"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Report Templates",
+      "description": "Requires authentication + reports.* permission.",
+      "item": [
+        {
+          "name": "Create Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Daily Status Report\",\n  \"code\": \"DSR-ENG\",\n  \"type\": \"daily\",\n  \"reportType\": \"DSR\",\n  \"targetAudience\": \"individual\",\n  \"isDefault\": true,\n  \"sections\": [\n    {\n      \"sectionId\": \"summary\",\n      \"title\": \"Summary\",\n      \"fields\": [\n        {\n          \"fieldId\": \"goal\",\n          \"label\": \"Goal\",\n          \"type\": \"core.textarea\",\n          \"required\": true\n        },\n        {\n          \"fieldId\": \"blockers\",\n          \"label\": \"Blockers\",\n          \"type\": \"core.textarea\"\n        }\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "List Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates?page=1&limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates/{{report_template_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates",
+                "{{report_template_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Template",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates/{{report_template_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates",
+                "{{report_template_id}}"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Daily Status Report v2\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Template",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates/{{report_template_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates",
+                "{{report_template_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Template by Department",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates/by-department/{{department_id}}/DSR",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates",
+                "by-department",
+                "{{department_id}}",
+                "DSR"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "System Template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates/system/DSR",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates",
+                "system",
+                "DSR"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Assign Template to Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/report-templates/{{report_template_id}}/assign-department",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "report-templates",
+                "{{report_template_id}}",
+                "assign-department"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentId\": \"{{department_id}}\",\n  \"customTemplateEnabled\": true,\n  \"useAsCustomTemplate\": true\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Report Schedules",
+      "description": "Requires authentication + reports.schedule / reports.view / reports.delete permission.",
+      "item": [
+        {
+          "name": "Create Schedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('schedule_id', res.data._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"templateId\": \"{{template_id}}\",\n  \"name\": \"Daily DSR — Every Evening 6PM\",\n  \"status\": \"active\",\n  \"scope\": {\n    \"type\": \"TENANT\"\n  },\n  \"cadence\": \"DAILY\",\n  \"timezone\": \"Asia/Kolkata\",\n  \"runAt\": {\n    \"hour\": 18,\n    \"minute\": 0\n  },\n  \"delivery\": {\n    \"channels\": [\"IN_APP\", \"EMAIL\"],\n    \"recipients\": {\n      \"userIds\": [],\n      \"emails\": [\"admin@example.com\"]\n    },\n    \"subjectTemplate\": \"Daily Summary Report — {{date}}\",\n    \"messageTemplate\": \"Please find attached the daily summary report.\"\n  },\n  \"output\": {\n    \"formats\": [\"PDF\"],\n    \"includeBranding\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/schedules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/schedules?page=1&limit=20&status=active",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "templateId",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "description": "active|paused|disabled"
+                },
+                {
+                  "key": "cadence",
+                  "value": "",
+                  "disabled": true,
+                  "description": "DAILY|WEEKLY|MONTHLY|QUARTERLY|YEARLY|CRON"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Upcoming Schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/schedules/upcoming?hours=24",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules",
+                "upcoming"
+              ],
+              "query": [
+                {
+                  "key": "hours",
+                  "value": "24"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Schedule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Daily DSR — Updated\",\n  \"runAt\": {\n    \"hour\": 19,\n    \"minute\": 30\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/schedules/{{schedule_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules",
+                "{{schedule_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Pause Schedule",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/schedules/{{schedule_id}}/pause",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules",
+                "{{schedule_id}}",
+                "pause"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resume Schedule",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/schedules/{{schedule_id}}/resume",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules",
+                "{{schedule_id}}",
+                "resume"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Run Schedule Now",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/schedules/{{schedule_id}}/run",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules",
+                "{{schedule_id}}",
+                "run"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Schedule",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/schedules/{{schedule_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "schedules",
+                "{{schedule_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Report Runs",
+      "description": "Requires authentication + reports.* permission.",
+      "item": [
+        {
+          "name": "Run Template Manually",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('run_id', res.data._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"period\": {\n    \"from\": \"2026-02-24T00:00:00.000Z\",\n    \"to\": \"2026-02-24T23:59:59.999Z\",\n    \"label\": \"February 24, 2026\"\n  },\n  \"scope\": {\n    \"type\": \"TENANT\"\n  },\n  \"output\": {\n    \"formats\": [\"PDF\", \"JSON\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/templates/{{template_id}}/run",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "templates",
+                "{{template_id}}",
+                "run"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Report Runs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/runs?page=1&limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "runs"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "templateId",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "scheduleId",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "disabled": true,
+                  "description": "queued|running|success|failed"
+                },
+                {
+                  "key": "triggerType",
+                  "value": "",
+                  "disabled": true,
+                  "description": "manual|schedule|api"
+                },
+                {
+                  "key": "fromDate",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Run by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/runs/{{run_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "runs",
+                "{{run_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retry Failed Run",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/runs/{{run_id}}/retry",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "runs",
+                "{{run_id}}",
+                "retry"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Download Run Output",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/runs/{{run_id}}/download",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "runs",
+                "{{run_id}}",
+                "download"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Run",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/runs/{{run_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "runs",
+                "{{run_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Report Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "stats"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI",
+      "item": [
+        {
+          "name": "AI Assistant Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenantId\": \"{{tenant_id}}\",\n  \"query\": \"Summarize blockers for my team\",\n  \"context\": {\"tasks\": [], \"projects\": []}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/assistant/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "assistant",
+                "query"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Audit Search NLP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenantId\": \"{{tenant_id}}\",\n  \"query\": \"Who changed billing last week?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/audit/search",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ai",
+                "audit",
+                "search"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reporting Framework Engine",
+      "item": [
+        {
+          "name": "Templates",
+          "item": [
+            {
+              "name": "Create Template",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Daily Status Report\",\n  \"code\": \"DSR-API\",\n  \"type\": \"daily\",\n  \"targetAudience\": \"individual\",\n  \"scoringConfig\": {\n    \"enabled\": true,\n    \"maxScore\": 100,\n    \"calculationLogic\": \"f1 + f2\"\n  },\n  \"sections\": [\n    {\n      \"sectionId\": \"summary\",\n      \"title\": \"Summary\",\n      \"fields\": [\n        {\n          \"fieldId\": \"f1\",\n          \"label\": \"Score\",\n          \"type\": \"core.number\",\n          \"required\": true\n        },\n        {\n          \"fieldId\": \"f2\",\n          \"label\": \"Mood\",\n          \"type\": \"core.number\"\n        }\n      ]\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/templates",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Templates",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/templates?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Template",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/templates/{{template_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates",
+                    "{{template_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Template",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Daily Status Report v2\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/templates/{{template_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates",
+                    "{{template_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Publish Template",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/templates/{{template_id}}/publish",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates",
+                    "{{template_id}}",
+                    "publish"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Clone Template",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/templates/DSR-API/clone",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates",
+                    "DSR-API",
+                    "clone"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reports",
+          "item": [
+            {
+              "name": "Create Report (Draft)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"{{template_id}}\",\n  \"period\": {\n    \"startDate\": \"2026-03-01T00:00:00.000Z\",\n    \"endDate\": \"2026-03-01T23:59:59.999Z\"\n  },\n  \"data\": {\n    \"summary\": {\n      \"f1\": 5,\n      \"f2\": 3\n    }\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/reports",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Reports",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/reports?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Report",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/reports/{{report_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports",
+                    "{{report_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Report",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"summary\": {\n      \"f1\": 7,\n      \"f2\": 2\n    }\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/reports/{{report_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports",
+                    "{{report_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Submit Report",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/reports/{{report_id}}/submit",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports",
+                    "{{report_id}}",
+                    "submit"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Approve Report",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comments\": \"Looks good\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/reports/{{report_id}}/approve",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports",
+                    "{{report_id}}",
+                    "approve"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Reject Report",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comments\": \"Needs changes\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/reports/{{report_id}}/reject",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "reports",
+                    "{{report_id}}",
+                    "reject"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Goals",
+          "item": [
+            {
+              "name": "Create Goal",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"team\",\n  \"ownerId\": \"{{user_id}}\",\n  \"title\": \"Ship release\",\n  \"period\": {\n    \"type\": \"quarterly\",\n    \"startDate\": \"2026-01-01T00:00:00.000Z\",\n    \"endDate\": \"2026-03-31T23:59:59.999Z\"\n  },\n  \"keyResults\": [\n    {\n      \"title\": \"Features shipped\",\n      \"metricType\": \"number\",\n      \"targetValue\": 10,\n      \"currentValue\": 2,\n      \"weight\": 1,\n      \"autoUpdateFrom\": \"manual\"\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/goals",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "goals"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Goals",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/goals?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "goals"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Goal",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/goals/{{goal_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "goals",
+                    "{{goal_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Goal",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"progress\": 0.4,\n  \"status\": \"on_track\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/goals/{{goal_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "goals",
+                    "{{goal_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Goal",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/goals/{{goal_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "goals",
+                    "{{goal_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Key Result",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentValue\": 5\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/goals/{{goal_id}}/key-results/0",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "goals",
+                    "{{goal_id}}",
+                    "key-results",
+                    "0"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Blockers",
+          "item": [
+            {
+              "name": "Create Blocker",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"technical\",\n  \"severity\": \"high\",\n  \"title\": \"CI failure\",\n  \"description\": \"Build pipeline failing\",\n  \"SLA\": {\n    \"expectedResolutionHours\": 24\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/blockers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "blockers"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "List Blockers",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/blockers?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "blockers"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Blocker",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/blockers/{{blocker_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "blockers",
+                    "{{blocker_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Blocker",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"in_progress\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/blockers/{{blocker_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "blockers",
+                    "{{blocker_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Escalate Blocker",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/blockers/{{blocker_id}}/escalate",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "blockers",
+                    "{{blocker_id}}",
+                    "escalate"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Resolve Blocker",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"resolutionNote\": \"Fixed\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/blockers/{{blocker_id}}/resolve",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "blockers",
+                    "{{blocker_id}}",
+                    "resolve"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Audit",
+          "item": [
+            {
+              "name": "List Audit Logs",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-tenant-id",
+                    "value": "{{tenant_id}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/audit?page=1&limit=20",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "audit"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Goals",
+      "item": [
+        {
+          "name": "Create Goal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentId\": \"{{department_id}}\",\n  \"weekCycleId\": \"{{week_cycle_id}}\",\n  \"title\": \"Implement cache layer\",\n  \"description\": \"Add Redis caching to reduce DB load\",\n  \"assignedToMemberId\": \"{{employee_member_id}}\",\n  \"goalType\": \"direct\",\n  \"priority\": \"high\",\n  \"timeline\": {\n    \"startDate\": \"2026-03-03T00:00:00.000Z\",\n    \"dueDate\": \"2026-03-08T23:59:59.999Z\",\n    \"dueDayOfWeek\": 6\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "List Goals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals?page=1&limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Goal",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Goal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priority\": \"medium\",\n  \"remarks\": \"Blocked on review\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Goal Progress (Manager)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}/progress",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}",
+                "progress"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"progressPct\": 60,\n  \"status\": \"IN_PROGRESS\",\n  \"reason\": \"Initial milestones completed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Current Week Goals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/week/current?employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "week",
+                "current"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Goals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/pending?employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "pending"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Goals by Employee",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/employee/{{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "employee",
+                "{{employee_member_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Goal Hierarchy by Week",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/hierarchy/2026-03-03T00:00:00.000Z?employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "hierarchy",
+                "2026-03-03T00:00:00.000Z"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Goal",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Submit Goal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}/submit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}",
+                "submit"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"selfReportedPct\": 60,\n  \"remarks\": \"Mostly done; blocked on review\",\n  \"status\": \"UNDER_REVIEW\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Approve Goal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}",
+                "approve"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"managerApprovedPct\": 80,\n  \"managerRemarks\": \"Looks good, proceed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reject Goal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}/reject",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}",
+                "reject"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rejectionReason\": \"Scope unclear\",\n  \"managerRemarks\": \"Please add timeline and dependencies\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Week Cycles",
+      "item": [
+        {
+          "name": "Create Week Cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeMemberId\": \"{{employee_member_id}}\",\n  \"weekStartDate\": \"2026-03-03T00:00:00.000Z\",\n  \"weekEndDate\": \"2026-03-09T23:59:59.999Z\",\n  \"workingDays\": [1, 2, 3, 4, 5],\n  \"goalSlotCount\": 5,\n  \"carriedForwardGoalCount\": 0,\n  \"employeeRemarks\": \"Planning week goals\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Week Cycles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles?page=1&limit=20&employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Week Cycle",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Week Cycle",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"goalSlotCount\": 6,\n  \"managerRemarks\": \"Add one more stretch goal\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Week Cycle",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Submit Week Cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}/submit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}",
+                "submit"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeRemarks\": \"Submitted for review\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Review Week Cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}/review",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}",
+                "review"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"managerRemarks\": \"Reviewing goals and workload\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Approve Week Cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}",
+                "approve"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"managerRemarks\": \"Approved\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reject Week Cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/week-cycles/{{week_cycle_id}}/reject",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "week-cycles",
+                "{{week_cycle_id}}",
+                "reject"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"managerRemarks\": \"Please revise goals before approval\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Work Reports",
+      "item": [
+        {
+          "name": "Get DSR Template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/template/DSR?departmentId={{department_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "template",
+                "DSR"
+              ],
+              "query": [
+                {
+                  "key": "departmentId",
+                  "value": "{{department_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Work Report (Draft)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportType\": \"DSR\",\n  \"departmentId\": \"{{department_id}}\",\n  \"templateId\": \"{{report_template_id}}\",\n  \"period\": {\n    \"startDate\": \"2026-03-08T00:00:00.000Z\",\n    \"endDate\": \"2026-03-08T23:59:59.999Z\"\n  },\n  \"contentTitle\": \"Daily Status\",\n  \"description\": \"Daily report\",\n  \"content\": [\n    {\n      \"fieldId\": \"goal\",\n      \"label\": \"Goal\",\n      \"type\": \"textarea\",\n      \"value\": \"Implemented Redis cache layer\"\n    },\n    {\n      \"fieldId\": \"blockers\",\n      \"label\": \"Blockers\",\n      \"type\": \"textarea\",\n      \"value\": \"Redis reconnection issue\"\n    }\n  ],\n  \"goalIds\": [\n    \"{{work_goal_id}}\"\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Work Report",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/{{work_report_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "{{work_report_id}}"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": [\n    {\n      \"fieldId\": \"goal\",\n      \"label\": \"Goal\",\n      \"type\": \"textarea\",\n      \"value\": \"Updated cache layer with TTL\"\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit Work Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/{{work_report_id}}/submit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "{{work_report_id}}",
+                "submit"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Approve Work Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/{{work_report_id}}/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "{{work_report_id}}",
+                "approve"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comments\": \"Looks good\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reject Work Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/{{work_report_id}}/reject",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "{{work_report_id}}",
+                "reject"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comments\": \"Needs changes\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Work Reports",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports?page=1&limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Work Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/{{work_report_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "{{work_report_id}}"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get WSR Template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/template/WSR?departmentId={{department_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "template",
+                "WSR"
+              ],
+              "query": [
+                {
+                  "key": "departmentId",
+                  "value": "{{department_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Suggestions",
+      "item": [
+        {
+          "name": "DSR Suggestions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/dsr/suggestions?employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "dsr",
+                "suggestions"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Pending Goals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/goals/pending?employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "goals",
+                "pending"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Goal Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/goals/recommendations?employeeMemberId={{employee_member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "goals",
+                "recommendations"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Analysis",
+      "item": [
+        {
+          "name": "Analyze Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/report/analyze",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "report",
+                "analyze"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportId\": \"{{work_report_id}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Report Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/report/{{work_report_id}}/analysis",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "report",
+                "{{work_report_id}}",
+                "analysis"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Goal Progress Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/goals/{{work_goal_id}}/progress-analysis",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "goals",
+                "{{work_goal_id}}",
+                "progress-analysis"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "WSR Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/wsr/analysis?employeeMemberId={{employee_member_id}}&periodStart=2026-03-01T00:00:00.000Z&periodEnd=2026-03-08T23:59:59.999Z",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "wsr",
+                "analysis"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                },
+                {
+                  "key": "periodStart",
+                  "value": "2026-03-01T00:00:00.000Z"
+                },
+                {
+                  "key": "periodEnd",
+                  "value": "2026-03-08T23:59:59.999Z"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "MSR Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/msr/analysis?employeeMemberId={{employee_member_id}}&periodStart=2026-03-01T00:00:00.000Z&periodEnd=2026-03-31T23:59:59.999Z",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "msr",
+                "analysis"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                },
+                {
+                  "key": "periodStart",
+                  "value": "2026-03-01T00:00:00.000Z"
+                },
+                {
+                  "key": "periodEnd",
+                  "value": "2026-03-31T23:59:59.999Z"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Quarterly Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/quarterly/analysis?employeeMemberId={{employee_member_id}}&periodStart=2026-01-01T00:00:00.000Z&periodEnd=2026-03-31T23:59:59.999Z",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "quarterly",
+                "analysis"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                },
+                {
+                  "key": "periodStart",
+                  "value": "2026-01-01T00:00:00.000Z"
+                },
+                {
+                  "key": "periodEnd",
+                  "value": "2026-03-31T23:59:59.999Z"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Yearly Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/yearly/analysis?employeeMemberId={{employee_member_id}}&periodStart=2026-01-01T00:00:00.000Z&periodEnd=2026-12-31T23:59:59.999Z",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "yearly",
+                "analysis"
+              ],
+              "query": [
+                {
+                  "key": "employeeMemberId",
+                  "value": "{{employee_member_id}}"
+                },
+                {
+                  "key": "periodStart",
+                  "value": "2026-01-01T00:00:00.000Z"
+                },
+                {
+                  "key": "periodEnd",
+                  "value": "2026-12-31T23:59:59.999Z"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Manager Review",
+      "item": [
+        {
+          "name": "Approve Goal Progress",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/goals/{{work_goal_id}}/progress",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "goals",
+                "{{work_goal_id}}",
+                "progress"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"progressPct\": 100,\n  \"status\": \"COMPLETED\",\n  \"reason\": \"All deliverables validated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Approve Work Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-tenant-id",
+                "value": "{{tenant_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/work-reports/{{work_report_id}}/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "work-reports",
+                "{{work_report_id}}",
+                "approve"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comments\": \"Approved\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

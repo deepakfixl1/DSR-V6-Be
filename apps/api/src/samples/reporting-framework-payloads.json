@@ -1,0 +1,108 @@
+{
+  "createDsrTemplate": {
+    "name": "Daily Status Report",
+    "code": "DSR_STANDARD",
+    "type": "daily",
+    "targetAudience": "individual",
+    "scheduleConfig": {
+      "required": true,
+      "dueTime": "18:00",
+      "autoReminder": true,
+      "gracePeriodHours": 4
+    },
+    "scoringConfig": {
+      "enabled": true,
+      "maxScore": 100,
+      "calculationLogic": "progress + quality"
+    },
+    "sections": [
+      {
+        "sectionId": "summary",
+        "title": "Daily Summary",
+        "description": "Short summary of work",
+        "order": 1,
+        "fields": [
+          {
+            "fieldId": "progress",
+            "label": "Progress Score",
+            "type": "core.number",
+            "required": true,
+            "validation": { "min": 0, "max": 100 }
+          },
+          {
+            "fieldId": "quality",
+            "label": "Quality Score",
+            "type": "core.rating",
+            "required": true,
+            "validation": { "min": 1, "max": 5 }
+          },
+          {
+            "fieldId": "summaryText",
+            "label": "Summary",
+            "type": "core.textarea",
+            "required": true,
+            "validation": { "maxLength": 1000 }
+          }
+        ]
+      }
+    ],
+    "metadata": { "category": "dsr" }
+  },
+  "submitDsrReport": {
+    "templateId": "<template-id>",
+    "period": {
+      "startDate": "2026-03-01T00:00:00.000Z",
+      "endDate": "2026-03-01T23:59:59.999Z"
+    },
+    "data": {
+      "summary": {
+        "progress": 75,
+        "quality": 4,
+        "summaryText": "Completed API integration and fixed bugs."
+      }
+    }
+  },
+  "createGoalWithKeyResults": {
+    "type": "team",
+    "ownerId": "<user-id>",
+    "title": "Improve Delivery Velocity",
+    "description": "Increase throughput without sacrificing quality",
+    "period": {
+      "type": "quarterly",
+      "startDate": "2026-01-01T00:00:00.000Z",
+      "endDate": "2026-03-31T23:59:59.999Z"
+    },
+    "keyResults": [
+      {
+        "title": "Ship 10 features",
+        "metricType": "number",
+        "targetValue": 10,
+        "currentValue": 2,
+        "weight": 1,
+        "autoUpdateFrom": "manual"
+      },
+      {
+        "title": "Reduce cycle time to 3 days",
+        "metricType": "number",
+        "targetValue": 3,
+        "currentValue": 5,
+        "weight": 1,
+        "autoUpdateFrom": "manual"
+      }
+    ],
+    "weightage": 1,
+    "status": "on_track"
+  },
+  "createAndEscalateBlocker": {
+    "create": {
+      "type": "dependency",
+      "severity": "high",
+      "title": "External API access pending",
+      "description": "Waiting for vendor credentials",
+      "SLA": { "expectedResolutionHours": 48 }
+    },
+    "escalate": {
+      "escalatedTo": "<user-id>"
+    }
+  }
+}

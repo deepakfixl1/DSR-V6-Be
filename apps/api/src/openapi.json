@@ -1,0 +1,69 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Reporting Framework Engine API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/templates": {
+      "post": { "summary": "Create template" },
+      "get": { "summary": "List templates" }
+    },
+    "/api/templates/{id}": {
+      "get": { "summary": "Get template" },
+      "put": { "summary": "Update template" }
+    },
+    "/api/templates/{id}/publish": {
+      "post": { "summary": "Publish template" }
+    },
+    "/api/templates/{code}/clone": {
+      "post": { "summary": "Clone template" }
+    },
+    "/api/reports": {
+      "post": { "summary": "Create report" },
+      "get": { "summary": "List reports" }
+    },
+    "/api/reports/{id}": {
+      "get": { "summary": "Get report" },
+      "put": { "summary": "Update report" }
+    },
+    "/api/reports/{id}/submit": {
+      "post": { "summary": "Submit report" }
+    },
+    "/api/reports/{id}/approve": {
+      "post": { "summary": "Approve report" }
+    },
+    "/api/reports/{id}/reject": {
+      "post": { "summary": "Reject report" }
+    },
+    "/api/goals": {
+      "post": { "summary": "Create goal" },
+      "get": { "summary": "List goals" }
+    },
+    "/api/goals/{id}": {
+      "get": { "summary": "Get goal" },
+      "put": { "summary": "Update goal" },
+      "delete": { "summary": "Delete goal" }
+    },
+    "/api/goals/{id}/key-results/{krIndex}": {
+      "patch": { "summary": "Update key result" }
+    },
+    "/api/blockers": {
+      "post": { "summary": "Create blocker" },
+      "get": { "summary": "List blockers" }
+    },
+    "/api/blockers/{id}": {
+      "get": { "summary": "Get blocker" },
+      "patch": { "summary": "Update blocker" }
+    },
+    "/api/blockers/{id}/escalate": {
+      "patch": { "summary": "Escalate blocker" }
+    },
+    "/api/blockers/{id}/resolve": {
+      "patch": { "summary": "Resolve blocker" }
+    },
+    "/api/audit": {
+      "get": { "summary": "List audit logs" }
+    }
+  }
+}

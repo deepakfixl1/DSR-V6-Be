@@ -1,0 +1,647 @@
+{
+  "info": {
+    "name": "DSR/WSR Platform API",
+    "description": "Complete API collection for DSR/WSR Platform - Generated 2026-03-08",
+    "_postman_id": "dsr-wsr-platform-v2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" },
+    { "key": "tenantId", "value": "", "type": "string" },
+    { "key": "reportId", "value": "", "type": "string" },
+    { "key": "goalId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/signup",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@company.com\",\n  \"password\": \"securepassword123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{"listen": "test", "script": {"exec": ["const json = pm.response.json(); const token = json?.data?.accessToken || json?.accessToken; if (token) pm.collectionVariables.set('accessToken', token);"]}}],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@company.com\",\n  \"password\": \"securepassword123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/logout",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/forgot-password",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"john@company.com\"\n}"}
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [{"listen": "test", "script": {"exec": ["const json = pm.response.json(); const token = json?.data?.accessToken || json?.accessToken; if (token) pm.collectionVariables.set('accessToken', token);"]}}],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/refresh",
+            "header": [{"key": "Content-Type", "value": "application/json"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔒 MFA",
+      "item": [
+        {
+          "name": "Setup TOTP",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/mfa/setup",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Verify MFA Setup",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/mfa/verify-setup",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"token\": \"123456\"\n}"}
+          }
+        },
+        {
+          "name": "Verify MFA (Login)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/mfa/verify",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"userId\": \"user_id_here\",\n  \"token\": \"123456\"\n}"}
+          }
+        },
+        {
+          "name": "Get MFA Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/mfa/status",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Users",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/me",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/users/me",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"John Updated\"\n}"}
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/change-password",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"currentPassword\": \"oldpassword\",\n  \"newPassword\": \"newpassword123\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Tenants",
+      "item": [
+        {
+          "name": "Create Tenant",
+          "event": [{"listen": "test", "script": {"exec": ["const json = pm.response.json(); const id = json?.data?._id || json?._id; if (id) pm.collectionVariables.set('tenantId', id);"]}}],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/tenants",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Acme Corp\",\n  \"slug\": \"acme-corp\"\n}"}
+          }
+        },
+        {
+          "name": "Get My Tenants",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tenants",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Get Tenant",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tenants/{{tenantId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Invite Member",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/tenants/{{tenantId}}/members/invite",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"newmember@company.com\",\n  \"role\": \"employee\"\n}"}
+          }
+        },
+        {
+          "name": "List Members",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tenants/{{tenantId}}/members",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/tenants/{{tenantId}}/departments",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Engineering\",\n  \"description\": \"Software Engineering team\"\n}"}
+          }
+        },
+        {
+          "name": "List Departments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tenants/{{tenantId}}/departments",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎯 Work Goals",
+      "item": [
+        {
+          "name": "Create Work Goal",
+          "event": [{"listen": "test", "script": {"exec": ["const json = pm.response.json(); const id = json?.data?._id || json?._id; if (id) pm.collectionVariables.set('goalId', id);"]}}],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/goals",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"title\": \"Complete API integration for user module\",\n  \"description\": \"Implement all user-related API endpoints\",\n  \"weekStart\": \"2026-03-04\",\n  \"assigneeId\": null\n}"}
+          }
+        },
+        {
+          "name": "Get Current Week Goals",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/goals/week/current",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Get Pending Goals",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/goals/pending",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Update Goal Progress",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/goals/{{goalId}}/progress",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"progress\": 75,\n  \"note\": \"75% complete, finalizing tests\"\n}"}
+          }
+        },
+        {
+          "name": "List All Goals",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/api/goals?page=1&limit=20", "host": ["{{baseUrl}}"], "path": ["api", "goals"], "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "20"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 Week Cycles",
+      "item": [
+        {
+          "name": "Create Week Cycle",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/week-cycles",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"weekStart\": \"2026-03-04\",\n  \"weekEnd\": \"2026-03-10\"\n}"}
+          }
+        },
+        {
+          "name": "Carry Forward Goals",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/week-cycles/{{cycleId}}/carry-forward",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"goalIds\": [\"goal_id_1\", \"goal_id_2\"]\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "📝 Work Reports (DSR/WSR/MSR)",
+      "item": [
+        {
+          "name": "Get DSR Template",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/work-reports/template/dsr",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Get WSR Template",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/work-reports/template/wsr",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Create DSR",
+          "event": [{"listen": "test", "script": {"exec": ["const json = pm.response.json(); const id = json?.data?._id || json?._id; if (id) pm.collectionVariables.set('reportId', id);"]}}],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/work-reports",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"reportType\": \"dsr\",\n  \"reportDate\": \"2026-03-08\",\n  \"content\": {\n    \"tasks_completed\": \"Implemented user authentication module, fixed 3 bugs\",\n    \"tasks_planned\": \"Start work on notification service tomorrow\",\n    \"blockers\": \"None\",\n    \"hours_worked\": 8\n  }\n}"}
+          }
+        },
+        {
+          "name": "Submit Report",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/work-reports/{{reportId}}/submit",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "List Work Reports",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/api/work-reports?limit=10&status=submitted", "host": ["{{baseUrl}}"], "path": ["api", "work-reports"], "query": [{"key": "limit", "value": "10"}, {"key": "status", "value": "submitted"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Approve Report",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/work-reports/{{reportId}}/approve",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"comment\": \"Great work today!\"\n}"}
+          }
+        },
+        {
+          "name": "Reject Report",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/work-reports/{{reportId}}/reject",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"reason\": \"Please add more detail about the tasks completed.\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Templates",
+      "item": [
+        {
+          "name": "Create Template",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/templates",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Engineering DSR Template\",\n  \"reportType\": \"dsr\",\n  \"fields\": [\n    {\"key\": \"tasks_completed\", \"label\": \"Tasks Completed\", \"type\": \"textarea\", \"required\": true},\n    {\"key\": \"tasks_planned\", \"label\": \"Tasks for Tomorrow\", \"type\": \"textarea\", \"required\": true},\n    {\"key\": \"blockers\", \"label\": \"Blockers\", \"type\": \"textarea\", \"required\": false},\n    {\"key\": \"hours_worked\", \"label\": \"Hours Worked\", \"type\": \"number\", \"required\": true}\n  ]\n}"}
+          }
+        },
+        {
+          "name": "List Templates",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/templates",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Get System Template (DSR)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/templates/system/dsr",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Publish Template",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/templates/{{templateId}}/publish",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "🤖 AI Analysis",
+      "item": [
+        {
+          "name": "DSR Suggestions",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/ai/dsr/suggestions?date=2026-03-08", "host": ["{{baseUrl}}"], "path": ["ai", "dsr", "suggestions"], "query": [{"key": "date", "value": "2026-03-08"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Goal Recommendations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ai/goals/recommendations",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Pending Goals",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ai/goals/pending",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "WSR Analysis",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/ai/wsr/analysis?weekStart=2026-03-04", "host": ["{{baseUrl}}"], "path": ["ai", "wsr", "analysis"], "query": [{"key": "weekStart", "value": "2026-03-04"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "MSR Analysis",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/ai/msr/analysis?month=3&year=2026", "host": ["{{baseUrl}}"], "path": ["ai", "msr", "analysis"], "query": [{"key": "month", "value": "3"}, {"key": "year", "value": "2026"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Quarterly Analysis",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/ai/quarterly/analysis?quarter=1&year=2026", "host": ["{{baseUrl}}"], "path": ["ai", "quarterly", "analysis"], "query": [{"key": "quarter", "value": "1"}, {"key": "year", "value": "2026"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "AI Assistant Query",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/ai/assistant/query",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"message\": \"What should I focus on today based on my pending goals?\"\n}"}
+          }
+        },
+        {
+          "name": "Analyze Report",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/ai/report/analyze",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"reportId\": \"{{reportId}}\"\n}"}
+          }
+        },
+        {
+          "name": "Get Report Analysis",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ai/report/{{reportId}}/analysis",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚧 Blockers",
+      "item": [
+        {
+          "name": "Create Blocker",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/blockers",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"title\": \"API rate limit blocking integration tests\",\n  \"description\": \"Third-party API rate limits are preventing automated tests\",\n  \"priority\": \"high\"\n}"}
+          }
+        },
+        {
+          "name": "List Blockers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/blockers",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Escalate Blocker",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/blockers/{{blockerId}}/escalate",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"escalationNote\": \"This is blocking the release\"\n}"}
+          }
+        },
+        {
+          "name": "Resolve Blocker",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/blockers/{{blockerId}}/resolve",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"resolution\": \"Contacted API vendor, limit was increased\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "item": [
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/notifications",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/notifications/unread-count",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/notifications/{{notificationId}}/read",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "💳 Billing",
+      "item": [
+        {
+          "name": "List Plans",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/billing/plans",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Get Subscription",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/billing/{{tenantId}}/subscription",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}]
+          }
+        },
+        {
+          "name": "Subscribe to Plan",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/billing/{{tenantId}}/subscribe",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"planId\": \"plan_id_here\",\n  \"paymentMethodId\": \"pm_xxx\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "🐙 GitHub Integration",
+      "item": [
+        {
+          "name": "Start GitHub OAuth",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/integrations/github/oauth/start",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "List Repos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/integrations/github/repos",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Get Today's Commits",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/integrations/github/commits/today",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Enable Repo Resource",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/integrations/github/resources/repos/enable",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}],
+            "body": {"mode": "raw", "raw": "{\n  \"repoId\": \"123456\",\n  \"name\": \"my-repo\",\n  \"fullName\": \"org/my-repo\",\n  \"ownerLogin\": \"org\",\n  \"defaultBranch\": \"main\",\n  \"trackedBranches\": [\"main\", \"develop\"]\n}"}
+          }
+        },
+        {
+          "name": "Disconnect GitHub",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/integrations/github/disconnect",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Goal Analysis",
+      "item": [
+        {
+          "name": "DSR Suggestions (Goal-based)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/goal-analysis/dsr-suggestions",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Analyze Report vs Goals",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/goal-analysis/work-reports/{{reportId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        },
+        {
+          "name": "Period Goal Analysis",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/api/goal-analysis/period?from=2026-03-01&to=2026-03-31", "host": ["{{baseUrl}}"], "path": ["api", "goal-analysis", "period"], "query": [{"key": "from", "value": "2026-03-01"}, {"key": "to", "value": "2026-03-31"}]},
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}, {"key": "x-tenant-id", "value": "{{tenantId}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "❤️ Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    }
+  ]
+}
